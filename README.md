@@ -28,27 +28,91 @@ docker compose up --build
 docker compose down
 ```
 
+## Подключение к базе данных
+
+По умолчанию `.env` настроен на **удалённую БД** (продакшен сервер). Все разработчики работают с одной общей базой.
+
+Переключение режима — в файле `.env`:
+
+```bash
+# Удалённая БД (по умолчанию) — общие данные с продакшеном:
+DATABASE_URL=postgresql+asyncpg://vectorsec:vectorsec@168.222.143.5:5432/vectorsec
+
+# Локальная БД — своя пустая база в Docker:
+# DATABASE_URL=postgresql+asyncpg://vectorsec:vectorsec@db:5432/vectorsec
+```
+
+После смены — перезапустить:
+```bash
+docker compose up --build
+```
+
 ## Работа с кодом
 
 ```bash
-# Создать новую ветку (опционально)
-git checkout -b feature/my-feature
-
-# Внести изменения в код...
-
 # Посмотреть что изменилось
 git status
-git diff
 
 # Закоммитить
 git add .
 git commit -m "Описание изменений"
 
-# Запушить в main (запускает автодеплой на сервер)
+# Запушить (автоматически задеплоит на сервер)
 git push origin main
 ```
 
-> **Важно:** каждый push в `main` автоматически деплоит изменения на продакшен сервер.
+> **Важно:** каждый push в `main` автоматически деплоит на продакшен.
+
+## Работа с базой данных
+
+### Локальная БД
+
+```bash
+docker compose exec db psql -U vectorsec -d vectorsec
+```
+
+### Удалённая БД (сервер)
+
+```bash
+# Подключиться к серверу
+ssh root@168.222.143.5
+
+# Зайти в psql
+cd ~/vectorsec
+docker compose exec db psql -U vectorsec -d vectorsec
+```
+
+### SQL-команды
+
+```sql
+-- Список таблиц
+\dt
+
+-- Структура таблицы
+\d items
+
+-- Все записи
+SELECT * FROM items;
+
+-- Добавить запись
+INSERT INTO items (name, description) VALUES ('Test', 'Описание');
+
+-- Обновить
+UPDATE items SET name = 'New name' WHERE id = 1;
+
+-- Удалить
+DELETE FROM items WHERE id = 1;
+
+-- Выход
+\q
+```
+
+### Сбросить локальную БД
+
+```bash
+docker compose down -v
+docker compose up --build
+```
 
 ## Структура проекта
 
@@ -71,64 +135,9 @@ vectorsec/
 └── docker-compose.yml
 ```
 
-## Работа с базой данных
+## Добавление новой модели
 
-### Локальная БД (у тебя на компьютере)
-
-```bash
-# Зайти в psql внутри контейнера
-docker compose exec db psql -U vectorsec -d vectorsec
-```
-
-### Удалённая БД (на сервере продакшена)
-
-```bash
-# Подключиться к серверу
-ssh root@168.222.143.5
-
-# Зайти в psql на сервере
-cd ~/vectorsec
-docker compose exec db psql -U vectorsec -d vectorsec
-```
-
-### Полезные SQL-команды
-
-```sql
--- Список таблиц
-\dt
-
--- Структура таблицы
-\d items
-
--- Посмотреть все записи
-SELECT * FROM items;
-
--- Добавить запись
-INSERT INTO items (name, description) VALUES ('Test', 'Описание');
-
--- Обновить запись
-UPDATE items SET name = 'New name' WHERE id = 1;
-
--- Удалить запись
-DELETE FROM items WHERE id = 1;
-
--- Выйти из psql
-\q
-```
-
-### Сброс базы данных
-
-```bash
-# Остановить и удалить volume с данными
-docker compose down -v
-
-# Запустить заново (БД создастся с нуля)
-docker compose up --build
-```
-
-## Добавление новой модели в БД
-
-### 1. Создать модель в `backend/app/models.py`
+### 1. Модель в `backend/app/models.py`
 
 ```python
 class User(Base):
@@ -140,10 +149,10 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 ```
 
-### 2. Добавить API-эндпоинт в `backend/app/main.py`
+### 2. Эндпоинт в `backend/app/main.py`
 
 ```python
-from .models import Item, User  # добавить User в импорт
+from .models import Item, User
 
 @app.get("/api/users")
 async def get_users(db: AsyncSession = Depends(get_db)):
@@ -151,21 +160,16 @@ async def get_users(db: AsyncSession = Depends(get_db)):
     return result.mappings().all()
 ```
 
-### 3. Перезапустить
+### 3. Перезапустить — таблица создастся автоматически
 
 ```bash
 docker compose up --build
 ```
 
-Таблица создастся автоматически при старте.
-
 ## Полезные команды
 
 ```bash
-# Логи всех сервисов
-docker compose logs
-
-# Логи конкретного сервиса
+# Логи сервиса
 docker compose logs backend
 docker compose logs frontend
 docker compose logs db
@@ -176,6 +180,6 @@ docker compose logs -f backend
 # Перезапустить один сервис
 docker compose restart backend
 
-# Пересобрать и перезапустить
+# Пересобрать всё
 docker compose up --build -d
 ```
