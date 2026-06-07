@@ -36,7 +36,7 @@ docker compose down
 
 ```bash
 # Удалённая БД (по умолчанию) — общие данные с продакшеном:
-DATABASE_URL=postgresql+asyncpg://vectorsec:vectorsec@168.222.143.5:5432/vectorsec
+DATABASE_URL=postgresql+asyncpg://USER:PASSWORD@SERVER_IP:5432/DB_NAME
 
 # Локальная БД — своя пустая база в Docker:
 # DATABASE_URL=postgresql+asyncpg://vectorsec:vectorsec@db:5432/vectorsec
@@ -77,7 +77,7 @@ docker compose exec db psql -U vectorsec -d vectorsec
 
 ```bash
 # Подключиться к серверу
-ssh root@168.222.143.5
+ssh root@SERVER_IP
 
 # Зайти в psql
 cd ~/vectorsec
