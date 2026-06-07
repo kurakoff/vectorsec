@@ -18,7 +18,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 48px;d
 nav.on{background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-color:var(--border)}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:color .3s}
 nav.on .nav-logo{color:var(--navy)}
-.nav-logo svg{width:26px;height:26px;flex-shrink:0}
+.nav-logo svg{height:21px;width:auto;flex-shrink:0;display:block}
 .nav-logo-text{font-size:17px;font-weight:800;letter-spacing:.09em}
 .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
 .nav-links a{font-size:14px;font-weight:500;text-decoration:none;color:rgba(255,255,255,.75);transition:color .2s}
@@ -190,7 +190,7 @@ textarea.fi{resize:vertical;min-height:80px}
 footer{background:var(--navy-deep);padding:36px 48px}
 .foot-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .foot-logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
-.foot-logo svg{width:22px;height:22px}
+.foot-logo svg{height:20px;width:auto;display:block}
 .foot-logo span{font-size:15px;font-weight:800;letter-spacing:.09em}
 .foot-copy{font-size:12px;color:rgba(255,255,255,.3)}
 .foot-badges{display:flex;gap:8px}

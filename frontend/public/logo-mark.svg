@@ -1,0 +1,10 @@
+<svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ВЕКТОР">
+<defs>
+<linearGradient id="g" x1="0" y1="29" x2="27" y2="0" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#2563EB"/>
+<stop offset="1" stop-color="#0D9488"/>
+</linearGradient>
+</defs>
+<path d="M7.49597 0H1.49164C0.797714 0 0.33956 0.721835 0.634941 1.34975L13.6419 28.9999L12.6121 17.6471L8.4149 0.718911C8.31019 0.296581 7.93109 0 7.49597 0Z" fill="url(#g)"/>
+<path d="M20.6344 0H26.6387C27.3327 0 27.7908 0.721835 27.4954 1.34975L14.4884 28.9999L15.5183 17.6471L19.7155 0.718911C19.8202 0.296581 20.1993 0 20.6344 0Z" fill="url(#g)"/>
+</svg>
