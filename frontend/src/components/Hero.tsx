@@ -227,20 +227,13 @@ export default function Hero() {
       <canvas className="hero-canvas" ref={canvasRef}></canvas>
       <div className="hero-wrap">
         <div className="hero-left">
-          <div className="hero-badge">
-            <div className="badge-dot"></div>
-            Российская разработка · Astra Linux · DPDK + VPP
-          </div>
-          <h1>
-            8 продуктов безопасности<br />
-            <em>на одной платформе</em>
-          </h1>
+          <h1>Вектор — российская модульная платформа сетевой безопасности класса NGFW</h1>
           <p className="hero-lead">
             Единый dataplane обслуживает все модули. Любая комбинация — одна
             консоль, один API. До 96&nbsp;Гбит/с на порт.
           </p>
           <div className="hero-ctas">
-            <a href="#contact" className="btn btn-blue">
+            <a href="#contact" className="btn btn-white">
               <svg viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
               Получить демо-доступ
             </a>
