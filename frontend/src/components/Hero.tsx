@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import Logo from "./Logo";
 
 type Mod = { label: string; a: number; r: number; c: string };
 type Threat = { x: number; y: number; tx: number; ty: number; spd: number; r: number; a: number; blocked: boolean; bAge: number };
@@ -99,9 +100,11 @@ export default function Hero() {
       if (right) {
         const cr = cv!.getBoundingClientRect();
         const rr = right.getBoundingClientRect();
-        cx = rr.left - cr.left + rr.width / 2;
+        // десктоп (узкая высокая колонка) — сдвиг к тексту; мобайл (широкая строка) — по центру
+        const cxFrac = rr.width > rr.height ? 0.5 : 0.42;
+        cx = rr.left - cr.left + rr.width * cxFrac;
         cy = rr.top - cr.top + rr.height / 2;
-        S = Math.max(0.55, Math.min(1.2, Math.min(rr.width, rr.height) / 430));
+        S = Math.max(0.55, Math.min(1.5, Math.min(rr.width, rr.height) / 400));
       } else {
         cx = W * 0.71; cy = H * 0.5; S = 1;
       }
@@ -137,19 +140,28 @@ export default function Hero() {
     }
 
     function drawNode(mx: number, my: number, mod: Mod) {
+      const teal = mod.c === "#34D399";
       ctx!.save();
-      ctx!.font = "600 11px Manrope,sans-serif";
+      ctx!.font = "700 12px Manrope,sans-serif";
       const tw = ctx!.measureText(mod.label).width;
-      const bw = tw + 34, bh = 26;
-      rrect(mx - bw / 2, my - bh / 2, bw, bh, 7);
+      const bw = tw + 34, bh = 30;
+      const x0 = mx - bw / 2, y0 = my - bh / 2;
+      // чип-заливка с мягкой тенью для глубины
+      ctx!.save();
+      ctx!.shadowColor = "rgba(2,8,20,0.42)";
+      ctx!.shadowBlur = 15;
+      ctx!.shadowOffsetY = 4;
+      rrect(x0, y0, bw, bh, 10);
       ctx!.fillStyle = P.nodeFill; ctx!.fill();
-      ctx!.strokeStyle = P.nodeStroke(mod.c === "#34D399");
-      ctx!.lineWidth = 1; ctx!.stroke();
-      ctx!.beginPath(); ctx!.arc(mx - bw / 2 + 9, my, 3, 0, Math.PI * 2);
-      ctx!.fillStyle = mod.c; ctx!.fill();
+      ctx!.restore();
+      // статичная обводка
+      rrect(x0, y0, bw, bh, 10);
+      ctx!.strokeStyle = P.nodeStroke(teal);
+      ctx!.lineWidth = 1.3; ctx!.stroke();
+      // текст по центру (без точки)
       ctx!.fillStyle = P.nodeText;
-      ctx!.textAlign = "left";
-      ctx!.fillText(mod.label, mx - bw / 2 + 18, my + 4);
+      ctx!.textAlign = "center";
+      ctx!.fillText(mod.label, mx, my + 4.5);
       ctx!.restore();
     }
 
@@ -219,9 +231,22 @@ export default function Hero() {
         const fd = fDots[i];
         if (!reduced) { fd.p += fd.sp; if (fd.p > 1) fd.p -= 1; }
         const fx = cx + (mx - cx) * fd.p, fy = cy + (my - cy) * fd.p;
-        ctx!.beginPath(); ctx!.arc(fx, fy, 2.2, 0, Math.PI * 2);
-        ctx!.fillStyle = P.dot(mod.c === "#34D399");
-        ctx!.fill();
+        // затухающий хвост-свечение позади точки + мягкий glow
+        const teal = mod.c === "#34D399";
+        const dotRGB = teal ? "52,211,153" : "96,165,250";
+        const ln = Math.hypot(mx - cx, my - cy) || 1;
+        const nx = (mx - cx) / ln, ny = (my - cy) / ln;
+        const tailLen = 26;
+        ctx!.save();
+        const tg = ctx!.createLinearGradient(fx - nx * tailLen, fy - ny * tailLen, fx, fy);
+        tg.addColorStop(0, `rgba(${dotRGB},0)`);
+        tg.addColorStop(1, `rgba(${dotRGB},0.6)`);
+        ctx!.beginPath(); ctx!.moveTo(fx - nx * tailLen, fy - ny * tailLen); ctx!.lineTo(fx, fy);
+        ctx!.strokeStyle = tg; ctx!.lineWidth = 2.6; ctx!.lineCap = "round"; ctx!.stroke();
+        ctx!.shadowColor = `rgb(${dotRGB})`; ctx!.shadowBlur = 9;
+        ctx!.beginPath(); ctx!.arc(fx, fy, 2.4, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgb(${dotRGB})`; ctx!.fill();
+        ctx!.restore();
         drawNode(mx, my, mod);
       });
 
@@ -277,7 +302,7 @@ export default function Hero() {
       <canvas className="hero-canvas" ref={canvasRef}></canvas>
       <div className="hero-wrap">
         <div className="hero-left">
-          <h1>Вектор - российская модульная платформа сетевой безопасности класса NGFW</h1>
+          <h1><Logo variant="full" mono className="hero-h1-logo" /> - российская модульная платформа сетевой безопасности класса NGFW</h1>
           <p className="hero-lead">
             Единый dataplane обслуживает все модули. Любая комбинация - одна
             консоль, один API. До 96&nbsp;Гбит/с на порт.

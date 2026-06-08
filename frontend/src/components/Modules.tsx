@@ -66,7 +66,6 @@ export default function Modules() {
                 </g>
               </g>
             </svg></div>
-            <span className="mod-fig">FIG 0.1</span>
             <div className="mod-name">Межсетевой экран NGFW</div>
             <div className="mod-desc">Stateful/stateless фильтрация с анализом приложений L7</div>
             <span className="mod-tag b">Базовый</span>
@@ -96,7 +95,6 @@ export default function Modules() {
               <circle cx="58" cy="54" r="4" fill="rgba(251,191,36,.75)" stroke="rgba(251,191,36,.3)" strokeWidth="4" />
               <circle cx="100" cy="74" r="4" fill="#032149" />
             </svg></div>
-            <span className="mod-fig">FIG 0.2</span>
             <div className="mod-name">IDS/IPS</div>
             <div className="mod-desc">Обнаружение и предотвращение вторжений — 50 000+ сигнатур</div>
             <span className="mod-tag b">Базовый</span>
@@ -118,7 +116,6 @@ export default function Modules() {
               <line x1="135" y1="50" x2="155" y2="50" stroke="rgba(3,33,73,.5)" strokeWidth="1" />
               <line x1="161" y1="62" x2="172" y2="73" stroke="url(#m2lg3)" strokeWidth="2.5" strokeLinecap="round" />
             </svg></div>
-            <span className="mod-fig">FIG 0.3</span>
             <div className="mod-name">Глубокая инспекция DPI</div>
             <div className="mod-desc">L7-анализ и SSL/TLS-дешифровка до 100 Гбит/с</div>
             <span className="mod-tag b">Базовый</span>
@@ -149,7 +146,6 @@ export default function Modules() {
               <path d="M96,66 Q96,59 100,59 Q104,59 104,66" fill="none" stroke="#032149" strokeWidth="1.6" />
               <circle cx="100" cy="72" r="2.5" fill="#032149" />
             </svg></div>
-            <span className="mod-fig">FIG 0.4</span>
             <div className="mod-name">VPN-шлюз</div>
             <div className="mod-desc">IPSec/SSL VPN с поддержкой ГОСТ-шифрования</div>
             <span className="mod-tag b">Базовый</span>
@@ -186,7 +182,6 @@ export default function Modules() {
                 <path d="M20.6344 0H26.6387C27.3327 0 27.7908 0.721835 27.4954 1.34975L14.4884 28.9999L15.5183 17.6471L19.7155 0.718911C19.8202 0.296581 20.1993 0 20.6344 0Z" fill="#032149" />
               </g>
             </svg></div>
-            <span className="mod-fig">FIG 0.5</span>
             <div className="mod-name">Web Application Firewall</div>
             <div className="mod-desc">Защита веб-приложений от OWASP Top 10, API-защита</div>
             <span className="mod-tag t">Расширенный</span>
@@ -218,7 +213,6 @@ export default function Modules() {
               <rect x="55" y="118" width="64" height="5" rx="2" fill="rgba(3,33,73,.28)" />
               <rect x="55" y="130" width="36" height="10" rx="3" fill="rgba(3,33,73,.55)" stroke="#032149" strokeWidth="1" />
             </svg></div>
-            <span className="mod-fig">FIG 0.6</span>
             <div className="mod-name">UTM-управление</div>
             <div className="mod-desc">Единая консоль, REST API, ролевая модель доступа</div>
             <span className="mod-tag t">Расширенный</span>
@@ -248,7 +242,6 @@ export default function Modules() {
               <circle cx="128" cy="52" r="3" fill="rgba(251,191,36,.8)" />
               <circle cx="72" cy="52" r="3" fill="rgba(251,191,36,.8)" />
             </svg></div>
-            <span className="mod-fig">FIG 0.7</span>
             <div className="mod-name">Anti-DDoS</div>
             <div className="mod-desc">Защита от DDoS-атак объёмом до 100 Гбит/с</div>
             <span className="mod-tag t">Расширенный</span>
@@ -282,35 +275,9 @@ export default function Modules() {
               <circle cx="76" cy="51" r="2.5" fill="#032149" opacity=".7" />
               <circle cx="131" cy="96" r="2" fill="#032149" opacity=".55" />
             </svg></div>
-            <span className="mod-fig">FIG 0.8</span>
             <div className="mod-name">Threat Intelligence</div>
             <div className="mod-desc">Фиды угроз и обновление сигнатур в реальном времени</div>
             <span className="mod-tag t">Расширенный</span>
-          </div>
-        </div>
-
-        {/* Tech cards */}
-        <div className="tech-sec fu d2">
-          <h3 className="tech-h">Технологическая база</h3>
-          <div className="tech-cards">
-            <div className="tech-card">
-              <div className="tc-name">DPDK</div>
-              <div className="tc-full">Data Plane Development Kit</div>
-              <div className="tc-desc">Набор библиотек для высокоскоростной обработки пакетов в пространстве пользователя (userspace), минуя стек ядра ОС.</div>
-              <div className="tc-adv"><svg viewBox="0 0 14 14"><polyline points="1,7 4,10 13,3" /></svg>Обход ядра ОС, минимальные задержки</div>
-            </div>
-            <div className="tech-card">
-              <div className="tc-name">VPP</div>
-              <div className="tc-full">Vector Packet Processing</div>
-              <div className="tc-desc">Высокопроизводительный стек обработки сетевых пакетов с векторной моделью выполнения - основа производительности Вектора.</div>
-              <div className="tc-adv"><svg viewBox="0 0 14 14"><polyline points="1,7 4,10 13,3" /></svg>Масштабируемость до 100+ Гбит/с</div>
-            </div>
-            <div className="tech-card">
-              <div className="tc-name">Astra Linux</div>
-              <div className="tc-full">Защищённая ОС российской разработки</div>
-              <div className="tc-desc">Нативная интеграция с Astra Linux на уровне ядра - использование механизмов мандатного управления доступом и модулей безопасности SELinux.</div>
-              <div className="tc-adv"><svg viewBox="0 0 14 14"><polyline points="1,7 4,10 13,3" /></svg>Сертификаты ФСТЭК, интеграция на уровне ядра</div>
-            </div>
           </div>
         </div>
       </div>
