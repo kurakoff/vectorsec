@@ -12,9 +12,8 @@ function Part() {
 
 export default function Compare() {
   return (
-    <section className="cmp-s" id="compare" style={{ paddingTop: 0 }}>
+    <section className="cmp-s" id="compare">
       <div className="inner">
-        <p className="sec-tag fu" style={{ paddingTop: "96px" }}>Сравнение</p>
         <h2 className="sec-h fu d1">Вектор vs конкуренты</h2>
         <p className="sec-sub fu d2">Сравнение по ключевым критериям выбора NGFW-решения для российского рынка. Вектор закрывает как российские регуляторные требования, так и задачи высокой производительности.</p>
         <div className="cmp-wrap fu d2">

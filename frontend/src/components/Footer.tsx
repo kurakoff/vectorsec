@@ -1,18 +1,29 @@
 import Logo from "./Logo";
 
 export default function Footer() {
+  const year = new Date().getFullYear();
   return (
     <footer>
       <div className="foot-inner">
-        <a href="#" className="foot-logo" aria-label="ВЕКТОР">
-          <Logo variant="full" gradientId="vec-grad-foot" />
-        </a>
-        <span className="foot-copy">© 2024 Платформа Вектор. Все права защищены.</span>
-        <div className="foot-badges">
-          <span className="fbadge">ФСТЭК</span>
-          <span className="fbadge">ФСБ</span>
-          <span className="fbadge">РЕЕСТР МЦ</span>
+        <div className="foot-brand">
+          <a href="#" className="foot-logo" aria-label="ВЕКТОР">
+            <Logo variant="full" mono />
+          </a>
+          <p className="foot-tagline">
+            Единая платформа сетевой безопасности класса NGFW
+          </p>
         </div>
+        <nav className="foot-links">
+          <a href="#platform">Платформа</a>
+          <a href="#modules">Модули</a>
+          <a href="#advantages">Преимущества</a>
+          <a href="#industries">Отрасли</a>
+          <a href="#contact">Контакты</a>
+        </nav>
+      </div>
+      <div className="foot-bottom">
+        <span className="foot-copy">© {year} Платформа «Вектор». Все права защищены.</span>
+        <span className="foot-note">Российская разработка · Astra Linux · DPDK + VPP</span>
       </div>
     </footer>
   );

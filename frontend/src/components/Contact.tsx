@@ -12,7 +12,6 @@ export default function Contact() {
     <section className="contact-s" id="contact">
       <div className="contact-inner">
         <div className="cl fu">
-          <p className="sec-tag">Контакт</p>
           <h2 className="sec-h">Готовы обсудить<br />внедрение Вектора?</h2>
           <p className="sec-sub">Наши специалисты ответят на технические вопросы, организуют демонстрацию и подготовят коммерческое предложение.</p>
           <div className="cinfo">

@@ -15,7 +15,7 @@ export default function Stats() {
           <div className="stat-lbl">одновременных VPN-туннелей</div>
         </div>
         <div className="stat fu d3">
-          <div className="stat-num" style={{ fontSize: "28px", letterSpacing: "-.01em" }}><b>ФСТЭК</b> / ФСБ</div>
+          <div className="stat-num"><b>ФСТЭК</b> / ФСБ</div>
           <div className="stat-lbl">сертификация и реестр Минцифры</div>
         </div>
       </div>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ВЕКТОР — Информационная панель</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Manrope',system-ui,sans-serif;color:#0F172A;overflow:hidden;font-size:13px}
+svg{display:block}
+
+/* ── LAYOUT ── */
+.app-dash{display:flex;height:100vh;background:#EDF2F9}
+
+/* ── SIDEBAR ── */
+.sb{width:200px;flex-shrink:0;background:#0B1930;display:flex;flex-direction:column;color:#fff;user-select:none}
+.sb-top{padding:14px 12px 10px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between}
+.sb-logo{display:flex;align-items:center;gap:8px}
+.sb-logo svg{flex-shrink:0}
+.sb-logo-txt{font-size:13px;font-weight:800;letter-spacing:.1em}
+.sb-collapse{width:24px;height:24px;border-radius:5px;background:rgba(255,255,255,.06);border:none;cursor:pointer;color:rgba(255,255,255,.35);font-size:10px;display:flex;align-items:center;justify-content:center}
+.sb-time{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px;color:rgba(255,255,255,.38)}
+.sb-time-inner{display:flex;align-items:center;gap:5px}
+.sb-search{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-si{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border-radius:6px;padding:6px 8px}
+.sb-si svg{width:12px;height:12px;stroke:rgba(255,255,255,.3);fill:none;flex-shrink:0;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sb-si input{background:none;border:none;outline:none;color:rgba(255,255,255,.55);font-size:11.5px;font-family:inherit;width:100%;min-width:0}
+.sb-si input::placeholder{color:rgba(255,255,255,.25)}
+.sb-si-arr{width:18px;height:18px;border-radius:4px;background:rgba(255,255,255,.05);border:none;cursor:pointer;color:rgba(255,255,255,.3);font-size:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* NAV */
+.sb-nav{flex:1;overflow-y:auto;padding:4px 0}
+.sb-nav::-webkit-scrollbar{width:2px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1)}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7.5px 12px;cursor:pointer;border-left:2px solid transparent;font-size:12px;font-weight:500;color:rgba(255,255,255,.52);transition:background .12s,color .12s;position:relative;min-height:0}
+.nav-item:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.78)}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:#3B82F6}
+.nav-ico{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;opacity:.7}
+.nav-item.active .nav-ico{opacity:1}
+.nav-lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-arr{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.3;flex-shrink:0}
+
+/* USER */
+.sb-user{padding:10px 12px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:8px}
+.av{width:26px;height:26px;border-radius:50%;background:#3B82F6;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.av.sm{width:22px;height:22px;font-size:9px}
+.sb-user-info .name{font-size:11px;font-weight:700;color:rgba(255,255,255,.85)}
+.sb-user-info .ip{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+
+/* HEADER */
+.mh{background:#fff;border-bottom:1px solid #E4EAF4;display:flex;align-items:center;gap:12px;padding:0 20px;height:50px;flex-shrink:0}
+.mh-title{font-size:17px;font-weight:800;color:#0B1F45;flex:1}
+.mh-search{display:flex;align-items:center;gap:6px;background:#F4F7FC;border:1px solid #E4EAF4;border-radius:8px;padding:7px 12px;width:220px}
+.mh-search svg{width:13px;height:13px;stroke:#94A3B8;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.mh-search input{background:none;border:none;outline:none;font-size:12.5px;font-family:inherit;color:#0B1F45;width:100%;min-width:0}
+.mh-search input::placeholder{color:#94A3B8}
+.mh-btn{padding:6px 14px;border-radius:7px;border:1px solid #E4EAF4;background:#fff;font-size:12.5px;font-weight:600;color:#0B1F45;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.mh-btn:hover{background:#F4F7FC}
+.mh-icon{width:34px;height:34px;border-radius:7px;border:1px solid #E4EAF4;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mh-icon:hover{background:#F4F7FC}
+.mh-icon svg{width:16px;height:16px;stroke:#64748B;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mh-user{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:8px;cursor:pointer;border:1px solid #E4EAF4}
+.mh-user-info .u-name{font-size:11.5px;font-weight:700;color:#0B1F45}
+.mh-user-info .u-role{font-size:10px;color:#94A3B8}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:18px 20px 20px;display:flex;flex-direction:column;gap:16px}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:2px}
+
+/* CARDS GRID */
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start}
+
+/* CARD */
+.card{background:#fff;border:1px solid #E8EEF8;border-radius:12px;padding:14px 16px;transition:box-shadow .18s,transform .15s;cursor:pointer}
+.card:hover{box-shadow:0 4px 20px rgba(11,31,69,.09);transform:translateY(-2px)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:11px}
+
+/* Card icon */
+.ci{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci svg{width:22px;height:22px;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ci.blue{background:#EFF6FF}.ci.blue svg{stroke:#3B82F6;fill:none}
+.ci.purple{background:#F5F3FF}.ci.purple svg{stroke:#8B5CF6;fill:none}
+.ci.grey{background:#F8FAFC}.ci.grey svg{stroke:#64748B;fill:none}
+.ci.green{background:#F0FDF4}.ci.green svg{stroke:#16A34A;fill:none}
+.ci.orange{background:#FFF7ED}.ci.orange svg{stroke:#F59E0B;fill:none}
+.ci.red{background:#FFF1F2}.ci.red svg{stroke:#E11D48;fill:none}
+
+/* Status badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.badge-err{background:#FEE2E2;color:#DC2626}.badge-err::before{background:#DC2626}
+.badge-ok{background:#DCFCE7;color:#16A34A}.badge-ok::before{background:#16A34A}
+.badge-unk{background:#F3F4F6;color:#6B7280}.badge-unk::before{background:#9CA3AF}
+
+.card-title{font-size:14px;font-weight:800;color:#0B1F45;margin-bottom:4px;line-height:1.2}
+.card-desc{font-size:11.5px;color:#94A3B8;line-height:1.55;margin-bottom:13px}
+
+/* Stats */
+.stats{display:flex;gap:14px;margin-bottom:13px;align-items:flex-start}
+.st{display:flex;flex-direction:column;gap:1px}
+.st-bar{height:2px;border-radius:1px;width:26px;margin-bottom:4px}
+.st-bar.b{background:#3B82F6}.st-bar.p{background:#8B5CF6}.st-bar.g{background:#16A34A}
+.st-bar.o{background:#F59E0B}.st-bar.r{background:#EF4444}.st-bar.gr{background:#CBD5E1}
+.st-val{font-size:13px;font-weight:700;color:#0B1F45;line-height:1}
+.st-val.mt{color:#CBD5E1;font-weight:400}
+.st-val.red{color:#DC2626}
+.st-val.grey{color:#94A3B8}
+.st-lbl{font-size:10px;color:#94A3B8;font-weight:500;margin-top:1px}
+
+/* Card button */
+.card-btn{display:inline-flex;align-items:center;padding:6px 13px;border:1.5px solid #D1D9EC;border-radius:7px;font-size:12px;font-weight:600;color:#0B1F45;cursor:pointer;background:#fff;font-family:inherit;width:fit-content;transition:border-color .15s,color .15s}
+.card-btn:hover{border-color:#3B82F6;color:#3B82F6}
+
+/* BOTTOM PANELS */
+.bp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{background:#fff;border:1px solid #E8EEF8;border-radius:12px;overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid #F1F5FB}
+.ph-title{font-size:13.5px;font-weight:800;color:#0B1F45}
+.ph-ico{width:28px;height:28px;border-radius:6px;background:#F4F7FC;border:1px solid #E8EEF8;display:flex;align-items:center;justify-content:center}
+.ph-ico svg{width:14px;height:14px;stroke:#64748B;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pb{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.sys-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#F9FAFB;border-radius:8px;border:1px solid #F1F5F9}
+.sys-left .sys-name{font-size:12.5px;font-weight:700;color:#0B1F45}
+.sys-left .sys-port{font-size:10.5px;color:#94A3B8;margin-top:2px}
+.nodata{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;text-align:center;gap:5px}
+.nodata-t{font-size:12.5px;font-weight:600;color:#64748B}
+.nodata-s{font-size:11.5px;color:#94A3B8}
+</style>
+</head>
+<body>
+<div class="app-dash">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sb">
+  <div class="sb-top">
+    <div class="sb-logo">
+      <svg width="17" height="17" viewBox="0 0 29 29" fill="none">
+        <path d="M7.49597 0H1.49164C0.797714 0 0.33956 0.721835 0.634941 1.34975L13.6419 28.9999L12.6121 17.6471L8.4149 0.718911C8.31019 0.296581 7.93109 0 7.49597 0Z" fill="white"/>
+        <path d="M20.6344 0H26.6387C27.3327 0 27.7908 0.721835 27.4954 1.34975L14.4884 28.9999L15.5183 17.6471L19.7155 0.718911C19.8202 0.296581 20.1993 0 20.6344 0Z" fill="white"/>
+      </svg>
+      <span class="sb-logo-txt">ВЕКТОР</span>
+    </div>
+    <button class="sb-collapse">«</button>
+  </div>
+  <div class="sb-time">
+    <div class="sb-time-inner">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="clock">01.06.2026 09:32:38</span>
+    </div>
+  </div>
+  <div class="sb-search">
+    <div class="sb-si">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Поиск по меню...">
+      <button class="sb-si-arr">▾</button>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="nav-item active">
+      <svg class="nav-ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="nav-lbl">Информационная панель</span>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4 12H2M22 12h-2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M12 2v2M12 22v-2"/></svg>
+      <span class="nav-lbl">Администрирование В...</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span class="nav-lbl">Узлы безопасности</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span class="nav-lbl">Сеть</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span class="nav-lbl">Политики и объекты</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span class="nav-lbl">Модули безопасности</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="nav-lbl">Пользователи и устройства</span>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+      <span class="nav-lbl">VPN</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="nav-lbl">Отчеты и журналы</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><line x1="12" y1="8" x2="12" y2="21"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+      <span class="nav-lbl">Интеграция с внешним...</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l1.41-1.41M4 12H2M22 12h-2M19.07 19.07l-1.41-1.41M5.34 5.34l1.41 1.41M12 4V2M12 22v-2"/></svg>
+      <span class="nav-lbl">Инструменты</span>
+      <svg class="nav-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <div class="sb-user">
+    <div class="av">S</div>
+    <div class="sb-user-info">
+      <div class="name">sterra_adm</div>
+      <div class="ip">192.168.1.26:3001/users</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <header class="mh">
+    <span class="mh-title">Информационная панель</span>
+    <div class="mh-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Поиск...">
+    </div>
+    <button class="mh-btn">Модули</button>
+    <div class="mh-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4 12H2M22 12h-2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M12 2v2M12 22v-2"/></svg>
+    </div>
+    <div class="mh-icon">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <div class="mh-user">
+      <div class="av sm">S</div>
+      <div class="mh-user-info">
+        <div class="u-name">sterra_adm</div>
+        <div class="u-role">Администратор МИЗ</div>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- CARDS GRID -->
+    <div class="cg">
+
+      <!-- 1: VPN/TLSCTRL -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci blue">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><line x1="12" y1="15" x2="12" y2="17"/></svg>
+          </div>
+          <span class="badge badge-err">Error</span>
+        </div>
+        <div class="card-title">VPN / TLSCTRL</div>
+        <div class="card-desc">Управление VPN/ZTNA-сессиями, профилями, пулами и TLSCTRL.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar b"></div><span class="st-val mt">—</span><span class="st-lbl">Сессии</span></div>
+          <div class="st"><div class="st-bar b"></div><span class="st-val mt">—</span><span class="st-lbl">Профили</span></div>
+          <div class="st"><div class="st-bar b"></div><span class="st-val mt">—</span><span class="st-lbl">Пулы</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 2: VPP/Dataplane -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci blue">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.22" y1="4.22" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.78" y2="19.78"/><line x1="4.22" y1="19.78" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <span class="badge badge-err">Error</span>
+        </div>
+        <div class="card-title">VPP / Dataplane</div>
+        <div class="card-desc">Состояние VPP, plugin, dataplane-счётчики и диагностика.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar gr"></div><span class="st-val grey">N/A</span><span class="st-lbl">Plugin</span></div>
+          <div class="st"><div class="st-bar b"></div><span class="st-val mt">—</span><span class="st-lbl">Туннели</span></div>
+          <div class="st"><div class="st-bar r"></div><span class="st-val red">Down</span><span class="st-lbl">API</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 3: Пользователи -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci purple">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="badge badge-ok">Active</span>
+        </div>
+        <div class="card-title">Пользователи</div>
+        <div class="card-desc">Пользователи, роли, доступ, сертификаты и 2FA.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar p"></div><span class="st-val mt">—</span><span class="st-lbl">Всего</span></div>
+          <div class="st"><div class="st-bar p"></div><span class="st-val mt">—</span><span class="st-lbl">Активны</span></div>
+          <div class="st"><div class="st-bar p"></div><span class="st-val mt">—</span><span class="st-lbl">2FA</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 4: Клиенты -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci grey">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <span class="badge badge-unk">Unknown</span>
+        </div>
+        <div class="card-title">Клиенты</div>
+        <div class="card-desc">Windows/Linux/Android клиенты, устройства и телеметрия.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar gr"></div><span class="st-val mt">—</span><span class="st-lbl">Online</span></div>
+          <div class="st"><div class="st-bar gr"></div><span class="st-val mt">—</span><span class="st-lbl">Устройства</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 5: Политики -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci blue">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span class="badge badge-err">Error</span>
+        </div>
+        <div class="card-title">Политики</div>
+        <div class="card-desc">Профили доступа, маршруты, DNS, allow/deny/detect.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar b"></div><span class="st-val mt">—</span><span class="st-lbl">Профили</span></div>
+          <div class="st"><div class="st-bar b"></div><span class="st-val mt">—</span><span class="st-lbl">Пулы</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 6: Сертификаты/mTLS -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci green">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <span class="badge badge-err">Error</span>
+        </div>
+        <div class="card-title">Сертификаты / mTLS</div>
+        <div class="card-desc">CA, клиентские сертификаты, mTLS-привязки.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar g"></div><span class="st-val mt">—</span><span class="st-lbl">Отозвано</span></div>
+          <div class="st"><div class="st-bar g"></div><span class="st-val mt">—</span><span class="st-lbl">ГОСТ</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 7: App Control -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci orange">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
+          <span class="badge badge-unk">Unknown</span>
+        </div>
+        <div class="card-title">App Control</div>
+        <div class="card-desc">Запрещённые приложения, detect/deny mode, blocked attempts.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar o"></div><span class="st-val mt">—</span><span class="st-lbl">Правила</span></div>
+          <div class="st"><div class="st-bar o"></div><span class="st-val mt">—</span><span class="st-lbl">Blocked</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 8: 2FA/RADIUS -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci red">
+            <svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </div>
+          <span class="badge badge-unk">Unknown</span>
+        </div>
+        <div class="card-title">2FA / RADIUS</div>
+        <div class="card-desc">Двухфакторная аутентификация, SMTP, RADIUS.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar r"></div><span class="st-val mt">—</span><span class="st-lbl">2FA users</span></div>
+          <div class="st"><div class="st-bar r"></div><span class="st-val mt">—</span><span class="st-lbl">RADIUS</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 9: События/Аудит -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci orange">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <span class="badge badge-ok">Active</span>
+        </div>
+        <div class="card-title">События / Аудит</div>
+        <div class="card-desc">События безопасности, аудит, ошибки, действия.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar r"></div><span class="st-val mt">—</span><span class="st-lbl">Critical</span></div>
+          <div class="st"><div class="st-bar o"></div><span class="st-val mt">—</span><span class="st-lbl">Warning</span></div>
+          <div class="st"><div class="st-bar r"></div><span class="st-val mt">—</span><span class="st-lbl">Всего</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+      <!-- 10: Настройки -->
+      <div class="card">
+        <div class="card-top">
+          <div class="ci grey">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4 12H2M22 12h-2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M12 2v2M12 22v-2"/></svg>
+          </div>
+          <span class="badge badge-err">Error</span>
+        </div>
+        <div class="card-title">Настройки</div>
+        <div class="card-desc">Настройки системы, endpoints, runtime, интеграции.</div>
+        <div class="stats">
+          <div class="st"><div class="st-bar r"></div><span class="st-val red">Err</span><span class="st-lbl">API</span></div>
+        </div>
+        <button class="card-btn">Открыть</button>
+      </div>
+
+    </div><!-- /cg -->
+
+    <!-- BOTTOM PANELS -->
+    <div class="bp">
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-title">Состояние системы</span>
+          <div class="ph-ico">
+            <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </div>
+        </div>
+        <div class="pb">
+          <div class="sys-row">
+            <div class="sys-left">
+              <div class="sys-name">control_system API</div>
+              <div class="sys-port">8081</div>
+            </div>
+            <span class="badge badge-err">Error</span>
+          </div>
+          <div class="sys-row">
+            <div class="sys-left">
+              <div class="sys-name">VPP API socket / tlsctrl plugin</div>
+              <div class="sys-port">/run/vpp/api.sock</div>
+            </div>
+            <span class="badge badge-err">Error</span>
+          </div>
+          <div class="sys-row">
+            <div class="sys-left">
+              <div class="sys-name">Audit / Events API</div>
+              <div class="sys-port">9090</div>
+            </div>
+            <span class="badge badge-unk">Unknown</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-title">Последние события</span>
+          <div class="ph-ico">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+        </div>
+        <div class="nodata">
+          <div class="nodata-t">События пока не подключены к API</div>
+          <div class="nodata-s">Источник аудита недоступен</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /dash -->
+
+<script>
+// Live clock
+function tick(){
+  const now = new Date();
+  const d = String(now.getDate()).padStart(2,'0');
+  const mo = String(now.getMonth()+1).padStart(2,'0');
+  const y = now.getFullYear();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${d}.${mo}.${y} ${h}:${m}:${s}`;
+}
+tick(); setInterval(tick,1000);
+
+// Nav interaction
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+// Card hover — no extra JS needed (CSS handles it)
+</script>
+</body>
+</html>

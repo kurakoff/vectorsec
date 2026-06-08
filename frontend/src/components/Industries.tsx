@@ -8,14 +8,13 @@ export default function Industries() {
   return (
     <section className="ind-s" id="industries">
       <div className="inner">
-        <p className="sec-tag fu">Отрасли</p>
         <h2 className="sec-h fu d1">Решения для ключевых отраслей</h2>
-        <p className="sec-sub fu d2">Платформа Вектор адаптирована под требования каждого сектора — от крупного бизнеса до государственных структур и промышленных предприятий.</p>
+        <p className="sec-sub fu d2">Платформа Вектор адаптирована под требования каждого сектора - от крупного бизнеса до государственных структур и промышленных предприятий.</p>
         <div className="ind-grid">
           <div className="ind-card fu">
             <div className="ind-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg></div>
             <div className="ind-name">Крупный корпоративный сектор</div>
-            <div className="ind-msg">Надёжность без замедления бизнес-процессов. Высокая производительность обеспечивает защиту без влияния на продуктивность — никаких компромиссов между безопасностью и скоростью.</div>
+            <div className="ind-msg">Надёжность без замедления бизнес-процессов. Высокая производительность обеспечивает защиту без влияния на продуктивность - никаких компромиссов между безопасностью и скоростью.</div>
             <a href="#contact" className="ind-lnk">Узнать подробнее <Arrow /></a>
           </div>
           <div className="ind-card fu d1">

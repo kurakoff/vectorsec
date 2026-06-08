@@ -2,7 +2,6 @@ export default function Advantages() {
   return (
     <section className="adv-s" id="advantages">
       <div className="inner">
-        <p className="sec-tag fu">Преимущества</p>
         <h2 className="sec-h fu d1">Почему выбирают Вектор</h2>
         <p className="sec-sub fu d2">Четыре ключевых отличия платформы, которые важны руководителям ИБ, CTO и системным интеграторам.</p>
         <div className="adv-grid">
@@ -17,7 +16,7 @@ export default function Advantages() {
             <div className="adv-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg></div>
             <div className="adv-title">Высокая производительность</div>
             <div className="adv-tag">До 100 Гбит/с без деградации под нагрузкой</div>
-            <div className="adv-desc">Userspace-обработка на DPDK/VPP исключает bottleneck на уровне ядра ОС. Линейное масштабирование производительности при добавлении процессорных ядер — без компромиссов в защите.</div>
+            <div className="adv-desc">Userspace-обработка на DPDK/VPP исключает bottleneck на уровне ядра ОС. Линейное масштабирование производительности при добавлении процессорных ядер - без компромиссов в защите.</div>
             <div className="adv-detail">DPDK userspace · VPP vectorized · Многоядерное масштабирование · NUMA-оптимизация</div>
           </div>
           <div className="adv-card fu d2">

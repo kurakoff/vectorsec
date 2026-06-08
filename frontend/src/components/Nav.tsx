@@ -13,7 +13,7 @@ export default function Nav() {
   return (
     <nav className={"" + (scrolled ? " on" : "")}>
       <a href="#" className="nav-logo" aria-label="ВЕКТОР">
-        <Logo variant="full" gradientId="vec-grad-nav" />
+        <Logo variant="full" mono />
       </a>
       <ul className="nav-links">
         <li><a href="#platform">Платформа</a></li>

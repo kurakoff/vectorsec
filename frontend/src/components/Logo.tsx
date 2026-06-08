@@ -3,6 +3,8 @@ type LogoProps = {
   variant?: "full" | "mark";
   /** уникальный id градиента (нужен при нескольких экземплярах на странице) */
   gradientId?: string;
+  /** моно-режим: весь логотип currentColor (без градиента на знаке) */
+  mono?: boolean;
   className?: string;
 };
 
@@ -17,9 +19,11 @@ const WORDMARK_PATH =
 export default function Logo({
   variant = "full",
   gradientId = "vec-grad",
+  mono = false,
   className,
 }: LogoProps) {
   const isFull = variant === "full";
+  const markFill = mono ? "currentColor" : `url(#${gradientId})`;
   return (
     <svg
       className={className}
@@ -29,20 +33,22 @@ export default function Logo({
       role="img"
       aria-label="ВЕКТОР"
     >
-      <defs>
-        <linearGradient
-          id={gradientId}
-          x1="0"
-          y1="29"
-          x2="27"
-          y2="0"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0" stopColor="#2563EB" />
-          <stop offset="1" stopColor="#0D9488" />
-        </linearGradient>
-      </defs>
-      <g fill={`url(#${gradientId})`}>
+      {!mono && (
+        <defs>
+          <linearGradient
+            id={gradientId}
+            x1="0"
+            y1="29"
+            x2="27"
+            y2="0"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0" stopColor="#2563EB" />
+            <stop offset="1" stopColor="#0D9488" />
+          </linearGradient>
+        </defs>
+      )}
+      <g fill={markFill}>
         {MARK_PATHS.map((d) => (
           <path key={d} d={d} />
         ))}
