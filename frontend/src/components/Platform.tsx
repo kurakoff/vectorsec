@@ -40,7 +40,7 @@ export default function Platform() {
           >
             <iframe
               className="plat-frame"
-              src="/dashboard.html?v=2"
+              src="/dashboard.html?v=3"
               title="Интерфейс платформы Вектор"
               loading="lazy"
               scrolling="no"
