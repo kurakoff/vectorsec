@@ -17,7 +17,7 @@ export default function Hero() {
     if (!ctx) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let W = 0, H = 0, cx = 0, cy = 0, T = 0, raf = 0, S = 1, sr = 112;
+    let W = 0, H = 0, cx = 0, cy = 0, T = 0, raf = 0, S = 1, sr = 112, chipS = 1;
     let running = true;
     const LS = 90, SR = 112;
 
@@ -101,10 +101,15 @@ export default function Hero() {
         const cr = cv!.getBoundingClientRect();
         const rr = right.getBoundingClientRect();
         // десктоп (узкая высокая колонка) — сдвиг к тексту; мобайл (широкая строка) — по центру
-        const cxFrac = rr.width > rr.height ? 0.5 : 0.42;
+        const mobile = rr.width > rr.height;
+        const cxFrac = mobile ? 0.5 : 0.42;
         cx = rr.left - cr.left + rr.width * cxFrac;
         cy = rr.top - cr.top + rr.height / 2;
-        S = Math.max(0.55, Math.min(1.5, Math.min(rr.width, rr.height) / 400));
+        // на мобайле созвездие меньше высоты строки — остаётся запас по краям
+        S = mobile
+          ? Math.max(0.48, Math.min(0.95, rr.height / 480))
+          : Math.max(0.55, Math.min(1.5, Math.min(rr.width, rr.height) / 400));
+        chipS = mobile ? 0.72 : 1; // чипы меньше на мобайле, чтобы не наезжали
       } else {
         cx = W * 0.71; cy = H * 0.5; S = 1;
       }
@@ -142,26 +147,26 @@ export default function Hero() {
     function drawNode(mx: number, my: number, mod: Mod) {
       const teal = mod.c === "#34D399";
       ctx!.save();
-      ctx!.font = "700 12px Manrope,sans-serif";
+      ctx!.font = `700 ${13.5 * chipS}px Manrope,sans-serif`;
       const tw = ctx!.measureText(mod.label).width;
-      const bw = tw + 34, bh = 30;
+      const bw = tw + 40 * chipS, bh = 34 * chipS;
       const x0 = mx - bw / 2, y0 = my - bh / 2;
       // чип-заливка с мягкой тенью для глубины
       ctx!.save();
       ctx!.shadowColor = "rgba(2,8,20,0.42)";
-      ctx!.shadowBlur = 15;
-      ctx!.shadowOffsetY = 4;
-      rrect(x0, y0, bw, bh, 10);
+      ctx!.shadowBlur = 16 * chipS;
+      ctx!.shadowOffsetY = 4 * chipS;
+      rrect(x0, y0, bw, bh, 12 * chipS);
       ctx!.fillStyle = P.nodeFill; ctx!.fill();
       ctx!.restore();
       // статичная обводка
-      rrect(x0, y0, bw, bh, 10);
+      rrect(x0, y0, bw, bh, 12 * chipS);
       ctx!.strokeStyle = P.nodeStroke(teal);
-      ctx!.lineWidth = 1.3; ctx!.stroke();
+      ctx!.lineWidth = 1.4; ctx!.stroke();
       // текст по центру (без точки)
       ctx!.fillStyle = P.nodeText;
       ctx!.textAlign = "center";
-      ctx!.fillText(mod.label, mx, my + 4.5);
+      ctx!.fillText(mod.label, mx, my + 5 * chipS);
       ctx!.restore();
     }
 

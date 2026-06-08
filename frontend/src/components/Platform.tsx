@@ -12,7 +12,11 @@ export default function Platform() {
   useEffect(() => {
     const el = vpRef.current;
     if (!el) return;
-    const update = () => setScale(el.clientWidth / DASH_W);
+    // на мобайле масштабируем так, чтобы влезла левая ~половина дашборда (крупнее), остальное обрезается
+    const update = () => {
+      const mobile = window.innerWidth <= 768;
+      setScale(el.clientWidth / (DASH_W * (mobile ? 0.5 : 1)));
+    };
     update();
     const ro = new ResizeObserver(update);
     ro.observe(el);

@@ -4,6 +4,11 @@ import { MODS } from "../data/modules";
 export default function Modules() {
   const [activeModule, setActiveModule] = useState<number | null>(null);
 
+  // на адаптиве клик по карточке не открывает модалку (не затемняет фон)
+  const openMod = (i: number) => {
+    if (window.innerWidth > 768) setActiveModule(i);
+  };
+
   const open = activeModule !== null;
 
   useEffect(() => {
@@ -30,7 +35,7 @@ export default function Modules() {
         <p className="sec-sub fu d2">Подключайте только необходимые модули. Расширяйте платформу по мере роста инфраструктуры без замены решения.</p>
         <div className="mod-grid">
           {/* 1: NGFW */}
-          <div className="mod-card fu" data-mod="0" onClick={() => setActiveModule(0)}>
+          <div className="mod-card fu" data-mod="0" onClick={() => openMod(0)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="m0lg1" x1="52" y1="113" x2="148" y2="88" gradientUnits="userSpaceOnUse">
@@ -72,7 +77,7 @@ export default function Modules() {
           </div>
 
           {/* 2: IDS/IPS */}
-          <div className="mod-card fu d1" data-mod="1" onClick={() => setActiveModule(1)}>
+          <div className="mod-card fu d1" data-mod="1" onClick={() => openMod(1)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="m1gsi" x1="100" y1="74" x2="148" y2="36" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#032149" stopOpacity=".9" /><stop offset="100%" stopColor="#032149" stopOpacity=".15" /></linearGradient>
@@ -101,7 +106,7 @@ export default function Modules() {
           </div>
 
           {/* 3: DPI */}
-          <div className="mod-card fu d2" data-mod="2" onClick={() => setActiveModule(2)}>
+          <div className="mod-card fu d2" data-mod="2" onClick={() => openMod(2)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs><linearGradient id="m2lg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#032149" /><stop offset="100%" stopColor="#032149" stopOpacity=".4" /></linearGradient></defs>
               <polygon points="100,114 150,87 100,60 50,87" fill="rgba(3,33,73,.11)" stroke="rgba(3,33,73,.5)" strokeWidth="1.5" />
@@ -122,7 +127,7 @@ export default function Modules() {
           </div>
 
           {/* 4: VPN */}
-          <div className="mod-card fu d3" data-mod="3" onClick={() => setActiveModule(3)}>
+          <div className="mod-card fu d3" data-mod="3" onClick={() => openMod(3)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="m3vg1" x1="46" y1="110" x2="154" y2="38" gradientUnits="userSpaceOnUse">
@@ -152,7 +157,7 @@ export default function Modules() {
           </div>
 
           {/* 5: WAF */}
-          <div className="mod-card adv fu d1" data-mod="4" onClick={() => setActiveModule(4)}>
+          <div className="mod-card adv fu d1" data-mod="4" onClick={() => openMod(4)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <clipPath id="m4shieldClip">
@@ -188,7 +193,7 @@ export default function Modules() {
           </div>
 
           {/* 6: UTM */}
-          <div className="mod-card adv fu d2" data-mod="5" onClick={() => setActiveModule(5)}>
+          <div className="mod-card adv fu d2" data-mod="5" onClick={() => openMod(5)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="118" y="10" width="62" height="82" rx="5" fill="rgba(3,33,73,.04)" stroke="rgba(3,33,73,.18)" strokeWidth="1" />
               <rect x="118" y="10" width="62" height="18" rx="5" fill="rgba(3,33,73,.07)" />
@@ -219,7 +224,7 @@ export default function Modules() {
           </div>
 
           {/* 7: Anti-DDoS */}
-          <div className="mod-card adv fu d3" data-mod="6" onClick={() => setActiveModule(6)}>
+          <div className="mod-card adv fu d3" data-mod="6" onClick={() => openMod(6)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <marker id="m6arr-ddos" markerWidth="7" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -248,7 +253,7 @@ export default function Modules() {
           </div>
 
           {/* 8: Threat Intelligence */}
-          <div className="mod-card adv fu d4" data-mod="7" onClick={() => setActiveModule(7)}>
+          <div className="mod-card adv fu d4" data-mod="7" onClick={() => openMod(7)}>
             <div className="mod-art"><svg viewBox="0 0 200 148" fill="none" xmlns="http://www.w3.org/2000/svg">
               <line x1="100" y1="72" x2="52" y2="30" stroke="rgba(3,33,73,.48)" strokeWidth="1" />
               <line x1="100" y1="72" x2="148" y2="30" stroke="rgba(3,33,73,.48)" strokeWidth="1" />
