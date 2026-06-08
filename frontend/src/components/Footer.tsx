@@ -13,13 +13,13 @@ export default function Footer() {
             Единая платформа сетевой безопасности класса NGFW
           </p>
         </div>
-        <nav className="foot-links">
+        <div className="foot-links">
           <a href="#platform">Платформа</a>
           <a href="#modules">Модули</a>
           <a href="#advantages">Преимущества</a>
           <a href="#industries">Отрасли</a>
           <a href="#contact">Контакты</a>
-        </nav>
+        </div>
       </div>
       <div className="foot-bottom">
         <span className="foot-copy">© {year} Платформа «Вектор». Все права защищены.</span>
